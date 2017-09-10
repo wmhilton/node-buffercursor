@@ -1,6 +1,6 @@
 {
   "name": "buffercursor",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "author": "Timothy J Fontaine <tjfontaine@gmail.com> (http://atxconsulting.com)",
   "description": "A simple way to traverse a Buffer like a cursor, updating position along the way",
   "keywords": [
@@ -8,19 +8,16 @@
     "cursor",
     "stream"
   ],
-  "homepage": "http://github.com/tjfontaine/node-buffercursor",
+  "homepage": "http://github.com/wmhilton/node-buffercursor",
   "bugs": {
-    "url": "http://github.com/tjfontaine/node-buffercursor/issues"
+    "url": "http://github.com/wmhilton/node-buffercursor/issues"
   },
   "repository": {
     "type": "git",
-    "url": "http://github.com/tjfontaine/node-buffercursor.git"
+    "url": "http://github.com/wmhilton/node-buffercursor.git"
   },
   "main": "buffercursor.js",
   "engines": {
     "node": ">= 0.5.0"
-  },
-  "dependencies": {
-    "verror": "^1.4.0"
   }
 }

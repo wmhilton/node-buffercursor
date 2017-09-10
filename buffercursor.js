@@ -18,9 +18,6 @@
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE
 
-var util = require('util');
-var VError = require('verror');
-
 var BufferCursor = module.exports = function(buff, noAssert) {
   if (!(this instanceof BufferCursor))
     return new BufferCursor(buff, noAssert);
@@ -37,17 +34,15 @@ var BufferCursor = module.exports = function(buff, noAssert) {
 };
 
 var BCO = BufferCursor.BufferCursorOverflow = function(length, pos, size) {
-  this.kind = 'BufferCursorOverflow';
-  this.length = length;
-  this.position = pos;
-  this.size = size;
-  VError.call(this,
-              'BufferCursorOverflow: length %d, position %d, size %d',
-              length,
-              pos,
-              size);
+  var err = new RangeError('BufferCursorOverflow: length ' + length + 
+                           ', position ' + pos +
+                           ', size ' + size)
+  err.kind = 'BufferCursorOverflow';
+  err.length = length;
+  err.position = pos;
+  err.size = size;
+  return err
 };
-util.inherits(BCO, VError);
 
 BufferCursor.prototype._move = function(step) {
   this._checkWrite(step);
@@ -67,7 +62,7 @@ BufferCursor.prototype._checkWrite = function(size) {
     shouldThrow = true;
 
   if (shouldThrow) {
-    var bco = new BCO(length,
+    var bco = BCO(length,
                       pos,
                       size);
     throw bco;
@@ -76,13 +71,12 @@ BufferCursor.prototype._checkWrite = function(size) {
 
 BufferCursor.prototype.seek = function(pos) {
   if (pos < 0)
-    throw new VError(new RangeError('Cannot seek before start of buffer'),
-                     'Negative seek values not allowed: %d', pos);
+    throw new RangeError('Cannot seek before start of buffer.\n' +
+                     'Negative seek values not allowed: ' + pos);
 
   if (pos > this.length)
-    throw new VError(new RangeError('Trying to seek beyond buffer'),
-                     'Requested %d position is beyond length %d',
-                     pos, this.length);
+    throw new RangeError('Trying to seek beyond buffer.\n' +
+                     'Requested ' + pos + ' position is beyond length ' + this.length);
 
   this._pos = pos;
   return this;
